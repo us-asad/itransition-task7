@@ -98,7 +98,7 @@ export default function Home({ games: gms }) {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2">
                   {{
                     rejected: <span className="text-[20px] font-bold text-red-500">Rejected</span>,
-                    finished: <span className={`text-[20px] font-bold ${game.won.includes(username) ? "text-green-700" : game.won.includes(game.second_player.name) || game.won.includes(game.game_starter.name) ? "text-red-500" : "text-gray-700"}`}>{game.won}</span>,
+                    finished: <span className={`text-[20px] font-bold ${game.won?.includes(username) ? "text-green-700" : game.won?.includes(game.second_player.name) || game.won?.includes(game.game_starter.name) ? "text-red-500" : "text-gray-700"}`}>{game.won}</span>,
                     pending: game?.second_player?.name === username ? (
                       <>
                         <button
