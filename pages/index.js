@@ -55,7 +55,7 @@ export default function Home({ games: gms }) {
     const interval = setInterval(async () => {
       const data = await fetchGames(token);
       setGames(data);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
