@@ -10,10 +10,11 @@ export const setAuthHeader = token => ({
 export const fetchGames = async token => {
   try {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/get-games`, setAuthHeader(token));
-    return res.data || [];
+    return Array.isArray(res.data) ? res.data : [];
   } catch (ex) {
     console.error(ex);
     toast.error("Server error, could not get new games, please check your internet network or try again later.");
+    return [];
   }
 }
 
@@ -24,6 +25,7 @@ export const fetchGame = async (id, token) => {
   } catch (ex) {
     console.error(ex);
     toast.error("Server error, could not get new games, please check your internet network or try again later.");
+    return {};
   }
 }
 
@@ -34,6 +36,7 @@ export const updateGame = async (id, token, data) => {
   } catch (ex) {
     console.error(ex);
     toast.error("Server error, could not get new games, please check your internet network or try again later.");
+    return {};
   }
 }
 

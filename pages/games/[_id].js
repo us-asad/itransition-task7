@@ -11,23 +11,23 @@ export default function GamePlayground({ game: gm }) {
   const token = getCookie("token");
   const username = getCookie("name");
   const { game_starter, second_player, turn, _id, movements } = game || {};
+  const isTurn = turn === game_starter?.case && game_starter?.name === username || turn === second_player?.case && second_player?.name === username;
 
   const finishGame = async winner => {
-    const res = await updateGame(_id, token, { status: "finished", won: winner });
-    if (res.data?._id) setWinner(winner);
+    const data = await updateGame(_id, token, { status: "finished", won: winner });
+    if (data?._id) setWinner(winner);
   }
 
   const move = async index => {
-    if (turn === game_starter?.case && game_starter?.name === username || turn === second_player?.case && second_player?.name === username) {
+    if (isTurn) {
       const newData = {
         movements: [...movements],
         turn: turn === "x" ? "o" : "x"
       }
       newData.movements[index] = username === game_starter.name ? game_starter.case : second_player.case;
 
-      const res = await updateGame(_id, token, newData);
-      if (res.data?._id)
-        setGame(res.data);
+      setGame(prev => ({ ...prev, ...newData }));
+      await updateGame(_id, token, newData);
     }
   }
 
@@ -63,6 +63,7 @@ export default function GamePlayground({ game: gm }) {
     checkWinner()
   }, [game])
 
+
   return (
     <div className="custom-container py-20">
       <div className="w-[800px] mx-auto bg-purple-100 px-8 pt-4 pb-16 rounded-xl">
@@ -80,16 +81,18 @@ export default function GamePlayground({ game: gm }) {
               <span>{movement || ""}</span>
             </button>
           ))}
-          {winner && <span
-            className="absolute w-full h-full top-0 left-0 flex justify-center items-center text-[20px] text-white font-bold"
-            style={{
-              background: winner.includes(username)
-                ? "#3be43b73"
-                : winner.includes(game_starter?.name) || winner.includes(second_player?.name)
-                  ? "#e43b3b73"
-                  : "#39393973"
-            }}
-          >{winner}</span>}
+          {(winner || game.won || !isTurn) && (
+            <span
+              className="absolute w-full h-full top-0 left-0 flex justify-center items-center text-[20px] text-white font-bold"
+              style={{
+                background: winner?.includes(username)
+                  ? "#3be43b73"
+                  : winner?.includes(game_starter?.name) || winner?.includes(second_player?.name)
+                    ? "#e43b3b73"
+                    : "#39393973"
+              }}
+            >{(winner || game.won) || (!isTurn ? "wait..." : "")}</span>
+          )}
         </div>
       </div>
     </div>

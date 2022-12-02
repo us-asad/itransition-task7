@@ -42,8 +42,8 @@ export default function Home({ games: gms }) {
   }
 
   const changeGameStatus = async (id, status) => {
-    const res = updateGame(id, token, { status });
-    if (res.data?._id) {
+    const data = await updateGame(id, token, { status });
+    if (data?._id) {
       toast.success(status === "rejected" ? "Successfully rejected" : "Successfully accepted");
       if (status !== "rejected") router.push(`/games/${id}`);
     }
@@ -180,10 +180,10 @@ const getCaseLabelClassName = isActive => `px-2 py-1 mr-3 border-2 border-purple
 
 export async function getServerSideProps({ req, res }) {
   const data = await fetchGames(getCookie("token", { req, res }));
-
+  console.log(data, "Daaaaaaarrrrrrrata");
   return {
     props: {
-      games: data
+      games: data || []
     }
   }
 }
