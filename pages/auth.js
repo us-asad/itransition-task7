@@ -29,7 +29,7 @@ export default function Auth() {
       <div className="w-[500px] bg-purple-100 rounded-lg overflow-hidden px-5 pt-5 pb-10">
         <h1 className="text-center text-[20px]">enter username for new <b className="text-purple-700 text-[40px]">Games</b>!</h1>
         <form onSubmit={handleSubmit(submit)} className="w-[80%] mx-auto">
-          <span className="text-gray-400 w-[80%] block mx-auto mb-1">enter your name and start fun mailing!</span>
+          <span className="text-gray-400 w-[80%] block mx-auto mb-1">enter your name and start new games!</span>
           <input
             type="text"
             placeholder="Smith"
